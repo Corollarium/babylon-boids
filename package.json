@@ -1,8 +1,33 @@
 {
-  "name": "babylon-boids",
+  "name": "@corollarium/babylon-boids",
   "version": "1.0.0",
   "main": "boids.js",
-  "repository": "https://github.com/Corollarium/babylon-boids.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Corollarium/babylon-boids.git"
+  },
   "author": "Corollarium (https://corollarium.com)",
-  "license": "MIT"
+  "license": "MIT",
+  "description": "A boids library for BabylonJS",
+  "bugs": {
+    "url": "https://github.com/Corollarium/babylon-boids/issues"
+  },
+  "homepage": "https://github.com/Corollarium/babylon-boids#readme",
+  "scripts": {
+    "lint": "eslint boids.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "babylonjs",
+    "webgl",
+    "boids"
+  ],
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  }
 }
