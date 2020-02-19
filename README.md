@@ -1,8 +1,8 @@
 # babylon-boids
-A [boids](https://en.wikipedia.org/wiki/Boids) library for [BabylonJS](https://babylonjs.com/). 
+A [boids](https://en.wikipedia.org/wiki/Boids) library for [BabylonJS](https://babylonjs.com/). Used in the [Laje de Santos Virtual Dive project](https://corollarium.github.io/lajevr/). Check:
 
-[Demo with boxes](https://corollarium.github.io/babylon-boids/boxes.html)
-[Demo with scary sharks](https://corollarium.github.io/babylon-boids/fish.html)
+- [Demo with boxes](https://corollarium.github.io/babylon-boids/boxes.html)
+- [Demo with scary sharks](https://corollarium.github.io/babylon-boids/fish.html)
 
 ![Shark boids](sharks.png)
 ![Shark boids with the debugging helpers](sharks-bounds.png)
