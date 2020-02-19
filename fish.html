@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Babylon Boids</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #boids-3d {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+    <script src="https://preview.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babylonjs-gui@4.0.3/babylon.gui.min.js"></script>
+</head>
+<body>
+    <canvas id="boids-3d" touch-action="none" />
+<script type="module">
+import BoidsManager from './boids.js';
+
+var engine = null,
+    scene = null,
+    camera = null,
+    assetsManager = null;
+
+function boidSetup() {
+    const container = document.getElementById('boids-3d');
+
+    /*
+    * boot renderer, scene, camera
+    */
+
+    // Create the scene space
+    bootScene(container);
+
+    const fish = loadFishFlock("https://models.babylonjs.com/", "shark.glb", 20);
+    // scene.debugLayer.show();
+
+    // Register a render loop to repeatedly render the scene
+    engine.runRenderLoop(() => {
+        const timeDiff = engine.getDeltaTime() / 1000.0;
+
+        // update boids
+        fish.update(timeDiff);
+
+        scene.render();
+    });
+
+    // Watch for browser/canvas resize events
+    window.addEventListener("resize", function () { 
+        engine.resize();
+    });
+}
+
+function bootScene (container) {
+    engine = new BABYLON.Engine(container, true); // Generate the BABYLON 3D engine
+    engine.loadingUIText = 'BoidsTest';
+    scene = new BABYLON.Scene(engine);
+
+    // Add a camera to the scene and attach it to the canvas
+    camera = new BABYLON.UniversalCamera(
+        'Camera',
+        new BABYLON.Vector3(10, 10, 10),
+        scene
+    );
+    camera.setTarget(new BABYLON.Vector3(0, 0, 0));
+    camera.applyGravity = false;
+    camera.speed = 0.1;
+    // Set the ellipsoid around the camera (e.g. your player's size)
+    camera.ellipsoid = new BABYLON.Vector3(0.5, 1, 0.5);
+
+    // update keys
+    camera.keysUp.push('w'.charCodeAt(0));
+    camera.keysUp.push('W'.charCodeAt(0));
+
+    // near/far
+    camera.minZ = 0.1;
+    camera.maxZ = 1000;
+    camera.attachControl(container, true);
+
+    // Enable Collisions
+    scene.collisionsEnabled = true;
+    camera.checkCollisions = true;
+
+    // Add lights to the scene
+    const ambientLight = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 0), scene);
+    ambientLight.diffuse = BABYLON.Color3.FromHexString('#CCCCCC');
+    ambientLight.intensity = 0.4;
+    
+    const sunLight = new BABYLON.DirectionalLight('DirectionalLight', new BABYLON.Vector3(0.2, -1, 0), scene);
+    sunLight.diffuse = BABYLON.Color3.FromHexString('#FFFFFF');
+    ambientLight.intensity = 0.8;
+}
+
+function loadFishFlock (modelpath, modelfile, total) {
+    const boidsManager = new BoidsManager(total, new BABYLON.Vector3(0.0, 10.0, 0.0), 50.0);
+    boidsManager.cohesion = 0.1;
+    boidsManager.separationMinDistance = 9.0;
+    const models = [];
+    BABYLON.SceneLoader.LoadAssetContainer(
+        modelpath, modelfile, scene,
+        (container) => {
+            container.addAllToScene();
+
+            container.meshes.forEach((mesh) => {
+                mesh.scaling.set(.5, .5, .5);
+                mesh.setEnabled(false);
+                if (mesh.material) {
+                    mesh.material.freeze();
+                }
+            });
+
+            for (let i = 0; i < total; i++) {
+                const entries = container.instantiateModelsToScene(p => 'fish' + p + i);
+                for (const node of entries.rootNodes) {
+                    node.position.set(boidsManager.boids[i].position);
+                }
+                entries.animationGroups[0].speedRatio = 1.0 + (0.1 * (Math.random() - 0.5));
+                entries.animationGroups[0].play(true);
+                entries.boid = boidsManager.boids[i];
+                models.push(entries);
+            }
+        }
+    );
+    boidsManager.showDebug();
+    boidsManager.gui(scene);
+
+    return {
+        models,
+        boidsManager,
+        update: ((_boids, _models) => {
+        return (deltaTime) => {
+            _boids.update(deltaTime);
+            _models.forEach((m) => {
+                for (const node of m.rootNodes) {
+                    node.position.copyFrom(m.boid.position);
+                    node.setDirection(m.boid.orientation);
+                }
+            });
+        };
+        })(boidsManager, models)
+    };
+    // TODO
+}
+
+
+boidSetup();
+    </script>
+</body>
+</html>  
