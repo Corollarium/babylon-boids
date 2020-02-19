@@ -80,30 +80,40 @@ Remember to call the update function
 
 ### `constructor(total, center, initialRadius = 1.0, boundRadiusScale = 100.0, initialVelocity = null)`
 Constructor. See [parameters](#Parameters) for class parameters that can be accessed and changed directly.
+
 `int total`: Total number of boids in simulation
+
 `BABYLON.vector3 center`: The center point of the boid volume.
+
 `float initialRadius`: The radius of the initial boid volume. Boids are distributed randomly within this volume from `center` when created.
+
 `float boundRadiusScale`: The bounding volume for the total simulation. Boids are restricted to this volume from `center`.
+
 `BABYLON.vector3 initialVelocity`: The inicial velocity for the boids. A small randomness factor is added to each boid.
 
 ### `update(deltaTime)`
 Updates the boids. Call on every render loop.
+
 `Number deltaTime` The time since last frame in seconds.
 
 ### `addForce(c)`
 Adds a force callback function. This enables you to change the simulation with your own forces. Called fr
+
 `callback c` A valid JS function, called on `update()` for each boid. Receives as parameters: `(BoidsManager, Boid)`
 
 ### `showDebug(scene)`
 Turns on debug visual helpers.
+
 `BABYLON.scene scene` The scene object.
 
 ### `hideDebug(scene)`
 Turns off debug visual helpers.
+
 `BABYLON.scene scene` The scene object.
 
 ### `gui(scene)`
 Turns on a panel to visually change the boid simulation parameters. 
+
 `BABYLON.scene scene` The scene object.
 
 ## Parameters
@@ -111,11 +121,17 @@ Turns on a panel to visually change the boid simulation parameters.
 All accessed on the BoidsManager instance.
 
 `cohesion` Cohesion factor.
+
 `separation` Separation factor.
+
 `alignment` Alignment factor.
+
 `separationMinDistance` The
+
 `maxSpeed` The maximum allowed speed for a boid, in units per second.
+
 `boundsMin` The minimum bounds for the valid boid volume.
+
 `boundsMax` The maximum bounds for the valid boid volume.
 
 ## LICENSE
