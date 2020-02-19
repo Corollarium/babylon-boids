@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "main": "boids.js",
   "repository": "https://github.com/Corollarium/babylon-boids.git",
-  "author": "Corollarium",
+  "author": "Corollarium (https://corollarium.com)",
   "license": "MIT"
 }
