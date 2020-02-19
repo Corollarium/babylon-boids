@@ -1,0 +1,8 @@
+{
+  "name": "babylon-boids",
+  "version": "1.0.0",
+  "main": "boids.js",
+  "repository": "https://github.com/Corollarium/babylon-boids.git",
+  "author": "Corollarium",
+  "license": "MIT"
+}
